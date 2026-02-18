@@ -3,83 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jet Crypto Casino</title>
+    <title>Jet Casino Pro</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background: #0b0e11; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 70px; }
-        
-        /* Վերևի հատվածը (Header) */
-        .header { background: #181d23; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2b3139; position: sticky; top: 0; z-index: 100; }
-        .logo { color: #f3ba2f; font-weight: bold; font-size: 20px; text-transform: uppercase; letter-spacing: 1px; }
-        .balance-pill { background: #2b3139; padding: 5px 15px; border-radius: 20px; border: 1px solid #f3ba2f; display: flex; align-items: center; gap: 8px; }
-        .balance-value { color: #f3ba2f; font-weight: bold; }
+        body { background: #0b0e11; color: white; font-family: sans-serif; margin: 0; overflow: hidden; }
+        .page { display: none; height: 100vh; width: 100vw; padding-top: 60px; padding-bottom: 70px; overflow-y: auto; }
+        .active { display: block; }
 
-        /* Խաղերի ցանկը (Grid) */
-        .container { padding: 15px; }
-        .section-title { font-size: 18px; margin-bottom: 15px; color: #848e9c; }
-        .game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .game-card { background: #1e2329; border-radius: 12px; overflow: hidden; border: 1px solid #2b3139; transition: transform 0.2s; }
-        .game-card:active { transform: scale(0.95); }
-        .game-img { width: 100%; height: 120px; background: linear-gradient(45deg, #2c3e50, #000); display: flex; align-items: center; justify-content: center; font-size: 40px; }
-        .game-info { padding: 10px; text-align: center; font-weight: bold; }
+        /* Header */
+        .header { position: fixed; top: 0; width: 100%; background: #181d23; padding: 15px; display: flex; justify-content: space-between; border-bottom: 1px solid #2b3139; z-index: 100; }
+        .logo { color: #f3ba2f; font-weight: bold; }
+        .balance { color: #f3ba2f; background: #2b3139; padding: 5px 12px; border-radius: 15px; border: 1px solid #f3ba2f; }
 
-        /* Ներքևի մենյուն (Navigation Bar) */
+        /* Lobby Grid */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; }
+        .card { background: #1e2329; border-radius: 12px; padding: 20px; text-align: center; border: 1px solid #2b3139; cursor: pointer; }
+        .card img { width: 50px; margin-bottom: 10px; }
+
+        /* Roulette Game Area */
+        #wheel { width: 280px; height: 280px; border-radius: 50%; border: 5px solid #333; transition: transform 4s cubic-bezier(0.1, 0, 0.2, 1); margin: 20px auto; display: block; }
+        .spin-btn { background: #f3ba2f; color: black; border: none; padding: 15px 40px; border-radius: 25px; font-weight: bold; font-size: 18px; margin-top: 10px; }
+
+        /* Navbar */
         .navbar { position: fixed; bottom: 0; width: 100%; background: #181d23; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #2b3139; }
-        .nav-item { color: #848e9c; text-decoration: none; font-size: 12px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .nav-item.active { color: #f3ba2f; }
-        .nav-icon { font-size: 20px; }
+        .nav-item { color: #848e9c; text-decoration: none; text-align: center; font-size: 11px; cursor: pointer; }
+        .nav-item.active-nav { color: #f3ba2f; }
+
+        /* Wallet Section */
+        .wallet-addr { background: #2b3139; padding: 15px; border-radius: 10px; margin: 20px; word-break: break-all; border: 1px dashed #f3ba2f; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <div class="logo">JET CASINO</div>
-        <div class="balance-pill">
-            <span class="balance-value" id="bal">47.90</span>
-            <span style="font-size: 12px; color: #848e9c;">USDT</span>
+        <div class="balance"><span id="user-balance">47.90</span> USDT</div>
+    </div>
+
+    <div id="home" class="page active">
+        <div style="padding: 15px; color: #848e9c;">Հանրամատչելի խաղեր</div>
+        <div class="grid">
+            <div class="card" onclick="showPage('roulette-game')">🎡<br>ROULETTE</div>
+            <div class="card" onclick="alert('Շուտով...')">🎰<br>SLOTS</div>
+            <div class="card" onclick="alert('Շուտով...')">🚀<br>CRASH</div>
+            <div class="card" onclick="alert('Շուտով...')">🃏<br>POKER</div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="section-title">Հանրամատչելի խաղեր</div>
-        <div class="game-grid">
-            <div class="game-card" onclick="alert('Ռուլետկան բացվում է...')">
-                <div class="game-img">🎡</div>
-                <div class="game-info">ROULETTE</div>
-            </div>
-            <div class="game-card" onclick="alert('Սլոտերը բացվում են...')">
-                <div class="game-img">🎰</div>
-                <div class="game-info">SLOTS</div>
-            </div>
-            <div class="game-card" onclick="alert('Poker-ը շուտով...')">
-                <div class="game-img">🃏</div>
-                <div class="game-info">POKER</div>
-            </div>
-            <div class="game-card" onclick="alert('Crash խաղը շուտով...')">
-                <div class="game-img">🚀</div>
-                <div class="game-info">CRASH</div>
-            </div>
+    <div id="roulette-game" class="page">
+        <div style="text-align: center;">
+            <canvas id="wheel" width="300" height="300"></canvas>
+            <div id="status" style="margin: 10px; color: #f3ba2f; font-weight: bold;"></div>
+            <button class="spin-btn" onclick="spinWheel()">SPIN (1 USDT)</button>
+            <br><br>
+            <button onclick="showPage('home')" style="background: none; border: none; color: #848e9c; text-decoration: underline;">Վերադառնալ</button>
         </div>
+    </div>
+
+    <div id="wallet" class="page">
+        <h2 style="text-align: center;">Լիցքավորում</h2>
+        <p style="text-align: center; padding: 0 20px;">Ուղարկեք USDT (TRC-20) այս հասցեին՝ հաշվեկշիռը համալրելու համար.</p>
+        <div class="wallet-addr" id="addr">TXXXXXXXXXXXXX_ՔՈ_ՀԱՍՑԵՆ</div>
+        <button onclick="copyAddr()" style="background: #f3ba2f; border: none; padding: 10px 20px; border-radius: 5px; margin: 0 auto; display: block;">Պատճենել</button>
     </div>
 
     <nav class="navbar">
-        <a href="#" class="nav-item active">
-            <span class="nav-icon">🏠</span>
-            <span>Home</span>
-        </a>
-        <a href="#" class="nav-item">
-            <span class="nav-icon">👛</span>
-            <span>Wallet</span>
-        </a>
-        <a href="#" class="nav-item">
-            <span class="nav-icon">📊</span>
-            <span>History</span>
-        </a>
-        <a href="#" class="nav-item">
-            <span class="nav-icon">👤</span>
-            <span>Profile</span>
-        </a>
+        <div class="nav-item active-nav" onclick="showPage('home', this)">🏠<br>Home</div>
+        <div class="nav-item" onclick="showPage('wallet', this)">👛<br>Wallet</div>
+        <div class="nav-item" onclick="showPage('home', this)">👤<br>Profile</div>
     </nav>
 
+    <script>
+        let balance = 47.90;
+        const canvas = document.getElementById('wheel');
+        const ctx = canvas.getContext('2d');
+        const sectors = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
+
+        function showPage(pageId, navEl) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            if(navEl) {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-nav'));
+                navEl.classList.add('active-nav');
+            }
+        }
+
+        function drawWheel() {
+            const arc = (2 * Math.PI) / sectors.length;
+            for (let i = 0; i < sectors.length; i++) {
+                ctx.beginPath();
+                ctx.fillStyle = sectors[i] === 0 ? "#00873c" : (i % 2 === 0 ? "#e31b23" : "#000000");
+                ctx.moveTo(150, 150);
+                ctx.arc(150, 150, 145, i * arc, (i + 1) * arc);
+                ctx.fill(); ctx.save();
+                ctx.translate(150, 150); ctx.rotate(i * arc + arc / 2);
+                ctx.fillStyle = "white"; ctx.font = "bold 12px Arial";
+                ctx.fillText(sectors[i], 110, 5); ctx.restore();
+            }
+        }
+
+        function spinWheel() {
+            if(balance < 1) return;
+            balance -= 1;
+            document.getElementById('user-balance').innerText = balance.toFixed(2);
+            const deg = Math.floor(Math.random() * 360) + 3600;
+            canvas.style.transform = `rotate(${deg}deg)`;
+            setTimeout(() => {
+                const win = Math.random() > 0.8 ? 5 : 0;
+                balance += win;
+                document.getElementById('user-balance').innerText = balance.toFixed(2);
+                document.getElementById('status').innerText = win > 0 ? "🎉 ՀԱՂԹԱՆԱԿ!" : "❌ ՓՈՐՁԻՐ ՆՈՐԻՑ";
+            }, 4000);
+        }
+
+        function copyAddr() {
+            alert("Հասցեն պատճենված է");
+        }
+
+        drawWheel();
+    </script>
 </body>
 </html>
