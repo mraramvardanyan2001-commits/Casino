@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Crypto Roulette</title>
+    <style>
+        body { background: #1a1a1a; color: white; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .balance-box { background: #2c2c2c; padding: 15px; border-radius: 10px; border: 2px solid #f3ba2f; margin-bottom: 20px; }
+        #wheel { width: 250px; height: 250px; border: 5px solid #fff; border-radius: 50%; transition: transform 4s cubic-bezier(0.1, 0, 0.2, 1); margin: 20px auto; }
+        .btn-spin { background: #f3ba2f; color: black; border: none; padding: 15px 40px; font-size: 20px; font-weight: bold; border-radius: 50px; cursor: pointer; }
+        .btn-spin:disabled { background: #555; }
+        .result { font-size: 20px; margin-top: 20px; color: #f3ba2f; }
+    </style>
+</head>
+<body>
+    <div class="balance-box">
+        <h2>💰 Հաշվեկշիռ: <span id="user-balance">46.90</span> USDT</h2>
+    </div>
+
+    <img id="wheel" src="https://i.imgur.com/v8S7z87.png" alt="Roulette Wheel">
+    
+    <div id="status" class="result">Պատրա՞ստ եք խաղալ:</div>
+    <br>
+    <button class="btn-spin" onclick="spinWheel()">SPIN (1 USDT)</button>
+
+    <script>
+        let balance = 46.90;
+        let spinning = false;
+
+        function spinWheel() {
+            if (spinning || balance < 1) return;
+            
+            spinning = true;
+            balance -= 1; // Խաղադրույք
+            document.getElementById('user-balance').innerText = balance.toFixed(2);
+            document.getElementById('status').innerText = "Անիվը պտտվում է...";
+
+            const wheel = document.getElementById('wheel');
+            const degrees = Math.floor(Math.random() * 360) + 3600; // Պտույտների քանակ
+            wheel.style.transform = `rotate(${degrees}deg)`;
+
+            setTimeout(() => {
+                spinning = false;
+                const win = Math.random() > 0.7 ? 2 : 0; // 30% հաղթելու հավանականություն
+                if (win > 0) {
+                    balance += win;
+                    document.getElementById('status').innerText = "🎉 Դուք հաղթեցիք " + win + " USDT!";
+                } else {
+                    document.getElementById('status').innerText = "❌ Փորձեք նորից:";
+                }
+                document.getElementById('user-balance').innerText = balance.toFixed(2);
+                wheel.style.transition = "none";
+                wheel.style.transform = `rotate(${degrees % 360}deg)`;
+                setTimeout(() => { wheel.style.transition = "transform 4s cubic-bezier(0.1, 0, 0.2, 1)"; }, 50);
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
